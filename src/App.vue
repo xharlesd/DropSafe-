@@ -79,12 +79,18 @@
         <div class="locker-grid">
           <div class="locker" v-for="locker in lockerList" :key="locker.id">
             <h3>Locker {{ locker.id }}</h3>
-            <p style="margin-bottom: 15px;">
+            
+            <div class="badge-container">
               <span :class="locker.status === 'vacant' ? 'status-secure' : 'status-alert'">
-                Status: {{ locker.status === 'vacant' ? 'Empty' : 'Package Inside' }}
+                {{ locker.status === 'vacant' ? 'Empty' : 'Package Inside' }}
               </span>
-            </p>
-            <p style="font-size: 12px; color: var(--text-muted); font-family: monospace;">Assigned UID: {{ locker.assignedUid || "none" }}</p>
+              
+              <span :class="locker.locked !== false ? 'status-secure' : 'status-alert'">
+                <i class="icon-lock"></i> {{ locker.locked !== false ? 'Locked' : 'Unlocked' }}
+              </span>
+            </div>
+
+            <p style="font-size: 12px; color: var(--text-muted); font-family: monospace; margin-top: 15px; margin-bottom: 0;">Assigned UID: {{ locker.assignedUid || "none" }}</p>
           </div>
         </div>
       </div>
@@ -236,28 +242,23 @@ onMounted(() => {
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Deep, rich modern backgrounds */
   --bg-page: #0B0F19;
   --bg-card: #131A2A;
   --bg-panel: rgba(26, 34, 53, 0.6);
   --bg-input: #1F2937;
   --border-color: rgba(255, 255, 255, 0.08);
 
-  /* Modern Gradients */
-  --grad-primary: linear-gradient(135deg, #6366F1 0%, #A855F7 100%); /* Indigo to Purple */
-  --grad-alert: linear-gradient(135deg, #FF512F 0%, #F09819 100%); /* Neon Coral to Amber */
-  --grad-secure: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); /* Cyan to Mint */
+  --grad-primary: linear-gradient(135deg, #6366F1 0%, #A855F7 100%); 
+  --grad-alert: linear-gradient(135deg, #FF512F 0%, #F09819 100%); 
+  --grad-secure: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); 
   
-  /* Solid Accents for text/borders */
   --accent-purple: #8B5CF6;
   --accent-orange: #F97316;
   --accent-cyan: #06B6D4;
 
-  /* Typography */
   --text-main: #F8FAFC;
-  --text-muted: #CBD5E1; /* Brightened for better contrast */
+  --text-muted: #CBD5E1; 
   
-  /* Glows */
   --glow-primary: 0 8px 25px -5px rgba(139, 92, 246, 0.5);
   --glow-alert: 0 8px 25px -5px rgba(249, 115, 22, 0.4);
   
@@ -276,39 +277,21 @@ body {
   color: var(--text-main);
 }
 
-/* Custom Dark Mode Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02); 
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15); 
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25); 
-}
-
-/* Fix Placeholder Text Colors */
-::placeholder {
-  color: var(--text-muted);
-  opacity: 0.7;
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+::placeholder { color: var(--text-muted); opacity: 0.7; }
 
 .page {
   padding: 40px 20px;
   display: flex;
   justify-content: center;
-  align-items: center; /* Centers the card vertically */
-  min-height: 100vh; /* Tells the container to take up the full screen height */
-  box-sizing: border-box; /* Keeps the padding from adding extra height */
+  align-items: center; 
+  min-height: 100vh; 
+  box-sizing: border-box; 
 }
 
-/* Base Glass Card */
 .card {
   width: 100%;
   max-width: 1150px;
@@ -329,22 +312,15 @@ body {
   padding: 50px 40px;
 }
 
-/* Typography */
 h1 { 
-  font-weight: 800; 
-  font-size: 36px; 
-  letter-spacing: -1px; 
-  margin-bottom: 5px; 
-  background: var(--grad-primary);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-weight: 800; font-size: 36px; letter-spacing: -1px; margin-bottom: 5px; 
+  background: var(--grad-primary); background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 h2 { font-weight: 700; font-size: 19px; color: var(--text-main); margin-top: 0; margin-bottom: 20px; }
 h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15px 0;}
 .subtitle { color: var(--text-muted); font-size: 15px; margin-top: 0; font-weight: 500;}
 
-/* Form Inputs */
 .input-group { margin-bottom: 22px; }
 .input-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
 .input-group input {
@@ -354,7 +330,6 @@ h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15p
 .input-group input:focus { outline: none; border-color: var(--accent-purple); box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15); }
 .error-msg { color: #F87171; font-size: 14px; text-align: center; margin-bottom: 15px; font-weight: 600; background: rgba(248, 113, 113, 0.1); padding: 10px; border-radius: 8px;}
 
-/* Modern Buttons */
 .login-btn {
   background: var(--grad-primary); color: #FFF; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 16px;
   padding: 16px; border: none; border-radius: var(--radius-sm); cursor: pointer; width: 100%; 
@@ -376,7 +351,6 @@ h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15p
 }
 .logout-btn:hover { background: rgba(248, 113, 113, 0.1); color: #F87171; border-color: rgba(248, 113, 113, 0.3); }
 
-/* Layout & Panels */
 .header-bar {
   display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid var(--border-color); padding-bottom: 25px; margin-bottom: 30px;
@@ -388,7 +362,6 @@ h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15p
   backdrop-filter: blur(8px);
 }
 
-/* User & Admin Zones */
 .user-profile {
   background: rgba(255, 255, 255, 0.03); padding: 12px 24px; border-radius: 50px;
   border: 1px solid var(--border-color); display: flex; align-items: center; gap: 20px;
@@ -401,7 +374,6 @@ h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15p
 .admin-notice { border-left: 4px solid var(--accent-cyan); padding-left: 15px; background: rgba(6, 182, 212, 0.05); }
 .data-highlight { color: #FFF; font-family: monospace; font-size: 15px; background: rgba(255, 255, 255, 0.1); padding: 4px 8px; border-radius: 6px; letter-spacing: 1px;}
 
-/* OTP Display */
 .otp-display {
   margin-top: 25px; text-align: center; background: rgba(249, 115, 22, 0.08); padding: 30px;
   border-radius: var(--radius-md); border: 1px solid rgba(249, 115, 22, 0.2);
@@ -412,13 +384,22 @@ h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15p
   display: block; 
 }
 
-/* Locker Status Indicators */
 .locker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .locker {
   background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-md); padding: 25px 20px;
   text-align: center; border: 1px solid var(--border-color); transition: all 0.3s ease;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
 .locker:hover { background: rgba(255, 255, 255, 0.04); transform: translateY(-3px); }
+
+/* NEW: Badge Container for dual statuses */
+.badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 
 .status-secure { 
   background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan); 
@@ -431,7 +412,6 @@ h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15p
   text-transform: uppercase; border: 1px solid rgba(249, 115, 22, 0.3); letter-spacing: 0.5px;
 }
 
-/* Table */
 .table-container { max-height: 400px; overflow-y: auto; border-radius: var(--radius-sm); border: 1px solid var(--border-color); }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { padding: 18px 16px; border-bottom: 1px solid var(--border-color); text-align: left; }
