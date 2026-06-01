@@ -81,8 +81,8 @@
             <h3>Locker {{ locker.id }}</h3>
             
             <div class="badge-container">
-              <span :class="locker.status === 'vacant' ? 'status-secure' : 'status-alert'">
-                {{ locker.status === 'vacant' ? 'Empty' : 'Package Inside' }}
+              <span :class="locker.status === 'vacant' ? 'status-secure' : (locker.status === 'reserved' ? 'status-pending' : 'status-alert')">
+                {{ locker.status === 'vacant' ? 'Empty' : (locker.status === 'reserved' ? 'Awaiting Delivery' : 'Package Inside') }}
               </span>
               
               <span :class="locker.locked !== false ? 'status-secure' : 'status-alert'">
@@ -406,10 +406,19 @@ h3 { font-weight: 700; font-size: 16px; color: var(--text-main); margin: 0 0 15p
   padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 800; 
   text-transform: uppercase; border: 1px solid rgba(6, 182, 212, 0.3); letter-spacing: 0.5px;
 }
+
 .status-alert { 
   background: rgba(249, 115, 22, 0.1); color: var(--accent-orange); 
   padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 800; 
   text-transform: uppercase; border: 1px solid rgba(249, 115, 22, 0.3); letter-spacing: 0.5px;
+}
+
+/* NEW: Styling for the Awaiting Delivery state */
+.status-pending { 
+  background: rgba(139, 92, 246, 0.1); 
+  color: var(--accent-purple); 
+  padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 800; 
+  text-transform: uppercase; border: 1px solid rgba(139, 92, 246, 0.3); letter-spacing: 0.5px;
 }
 
 .table-container { max-height: 400px; overflow-y: auto; border-radius: var(--radius-sm); border: 1px solid var(--border-color); }
